@@ -22,7 +22,7 @@ void busySpin()
         auto now = std::chrono::system_clock::now();
         auto duration = now.time_since_epoch();
         double ts = std::chrono::duration<double, std::milli>(duration).count();
-        if (pq.top()->wakeUpTimeMs <= ts) {
+        while (!pq.empty() && pq.top()->wakeUpTimeMs <= ts) {
             pq.top()->p.set_value();
             pq.pop();
         }
@@ -60,7 +60,7 @@ void advanceSleep(double ms)
     while (nowMs() - start < ms) {
     }
 }
-#elif SLEEP_MODE != 0// SLEEP_MODE == 2
+#elif SLEEP_MODE != 0 // SLEEP_MODE == 2
 void advanceSleep(double ms)
 {
     std::this_thread::sleep_for(std::chrono::nanoseconds((long long)(ms * 1e6)));
