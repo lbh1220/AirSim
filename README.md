@@ -23,15 +23,30 @@
 
 修改[AirLib\include\common\common_utils\AdvanceSleep.h]()第二行对SLEEP_MODE的取值即可，其中：
 
-1. AirSim原生实现不做修改
-2. 单线程自旋+`future.get`唤醒
-3. `std::this_thread::sleep_for`
-4. 自旋+线程内`std::this_thread::yield`
-5. 自旋+线程内`std::this_thread::sleep_for(0)`
-6. 自旋+线程内空转
+- `0`：AirSim原生实现不做修改
+- `1`：单线程自旋+`future.get`唤醒
+- `2`：`std::this_thread::sleep_for`
+- `3`：自旋+线程内`std::this_thread::yield`
+- `4`：自旋+线程内`std::this_thread::sleep_for(0)`
+- `5`：自旋+线程内空转
 
-# 实现方案
-待补充
+# 文档
+![](docs/images/airsim-performance/sample-master_37.png)
 
-# 测试结果
-待补充，但大致表现中1效果最佳
+![](docs/images/airsim-performance/sample-master_38.png)
+
+![](docs/images/airsim-performance/sample-master_39.png)
+
+![](docs/images/airsim-performance/sample-master_40.png)
+
+![](docs/images/airsim-performance/sample-master_41.png)
+
+![](docs/images/airsim-performance/sample-master_42.png)
+
+![](docs/images/airsim-performance/sample-master_43.png)
+
+![](docs/images/airsim-performance/sample-master_44.png)
+
+![](docs/images/airsim-performance/sample-master_45.png)
+
+![](docs/images/airsim-performance/sample-master_46.png)
