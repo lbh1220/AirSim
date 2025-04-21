@@ -1113,6 +1113,19 @@ class VehicleClient:
         """
         return self.client.call('getSettingsString')
 
+#I write an API for eVTOL
+    def setRotorMode_evtol(self, mode, vehicle_name = ''):
+        """
+        Set the rotor mode for eVTOL aircraft
+
+        Args:
+            mode is an int
+            mode = 0, no motors spin
+            mode = 1, only lift motors spin
+            mode = 2, lift motors and cruise motors spin
+            mode = 3, only cruise motors spin
+        """
+        self.client.call("setRotorMode_evtol", mode, vehicle_name)
 #----------------------------------- Multirotor APIs ---------------------------------------------
 class MultirotorClient(VehicleClient, object):
     def __init__(self, ip = "", port = 41451, timeout_value = 3600):
