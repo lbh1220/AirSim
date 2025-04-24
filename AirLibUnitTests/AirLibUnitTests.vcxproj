@@ -137,7 +137,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include;$(ProjectDir)..\AirLib\deps\boost_1_86_0</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>5205%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -156,7 +156,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include;$(ProjectDir)..\AirLib\deps\boost_1_86_0</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4100;4505;4820;4464;4514;4710;4571;5205%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -178,7 +178,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include;$(ProjectDir)..\AirLib\deps\boost_1_86_0</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>5205%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -202,7 +202,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include;$(ProjectDir)..\AirLib\deps\boost_1_86_0</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>5205%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -227,7 +227,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include;$(ProjectDir)..\AirLib\deps\boost_1_86_0</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>5205%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -251,7 +251,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\AirLib\deps\eigen3;$(ProjectDir)..\AirLib\include;$(ProjectDir)..\MavLinkCom\include;$(ProjectDir)..\AirLib\deps\boost_1_86_0</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>5205%(DisableSpecificWarnings)</DisableSpecificWarnings>
