@@ -6,14 +6,20 @@ double nowMs()
 }
 #endif
 #if SLEEP_MODE == 1
-boost::lockfree::queue<Event*> eventQueue;
+auto eventQueue = atomic_queue::AtomicQueueB<
+    Event*,
+    std::allocator<Event*>,
+    (Event*)NULL,
+    false,
+    false,
+    true>(1024);
 std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
 volatile bool busySpinQuit = false;
 void busySpin()
 {
     while (!busySpinQuit) {
         Event* p;
-        while (eventQueue.pop(p)) {
+        while (eventQueue.try_pop(p)) {
             pq.push(p);
         }
         if (pq.empty()) {

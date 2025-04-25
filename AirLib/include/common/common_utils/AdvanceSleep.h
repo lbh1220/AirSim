@@ -8,10 +8,13 @@
 #include <future>
 #include <thread>
 #include <queue>
-#include "boost/lockfree/queue.hpp"
 double nowMs();
 void advanceSleep(double ms);
 #if SLEEP_MODE == 1
+#ifndef __cpp_lib_atomic_is_always_lock_free
+#define __cpp_lib_atomic_is_always_lock_free 0
+#endif
+#include "atomic_queue/atomic_queue.h"
 class Event
 {
 public:
@@ -25,8 +28,14 @@ struct CompareEvent
         return a->wakeUpTimeMs > b->wakeUpTimeMs;
     }
 };
-
-extern boost::lockfree::queue<Event*> eventQueue;
+extern atomic_queue::AtomicQueueB<
+    Event*,
+    std::allocator<Event*>,
+    (Event*)NULL,
+    false,
+    false,
+    true>
+    eventQueue;
 extern std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
 void busySpin();
 extern std::thread busySpinThread;
