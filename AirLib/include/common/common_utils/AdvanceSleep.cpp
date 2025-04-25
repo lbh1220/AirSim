@@ -6,13 +6,20 @@ double nowMs()
 }
 #endif
 #if SLEEP_MODE == 1
-auto eventQueue = atomic_queue::AtomicQueueB<
+atomic_queue::AtomicQueueB<
     Event*,
     std::allocator<Event*>,
     (Event*)NULL,
     false,
     false,
-    false>(1024);
+    false>
+    eventQueue = atomic_queue::AtomicQueueB<
+        Event*,
+        std::allocator<Event*>,
+        (Event*)NULL,
+        false,
+        false,
+        false>(1024);
 std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
 volatile bool busySpinQuit = false;
 void busySpin()
