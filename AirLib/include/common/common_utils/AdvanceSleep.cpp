@@ -12,7 +12,7 @@ auto eventQueue = atomic_queue::AtomicQueueB<
     (Event*)NULL,
     false,
     false,
-    true>(1024);
+    false>(1024);
 std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
 volatile bool busySpinQuit = false;
 void busySpin()

@@ -34,7 +34,7 @@ extern atomic_queue::AtomicQueueB<
     (Event*)NULL,
     false,
     false,
-    true>
+    false>
     eventQueue;
 extern std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
 void busySpin();
