@@ -63,12 +63,6 @@ STRICT_MODE_OFF //todo what does this do?
 #include <tf2/convert.h>
 #include <unordered_map>
 #include <memory>
-#include <utils.h>
-#include <map>
-#include <string>
-#include <geometry_msgs/Point.h>
-#include <geometry_msgs/Quaternion.h>
-#include <geometry_msgs/Pose.h>
     // #include "nodelet/nodelet.h"
 
     struct SimpleMatrix
@@ -169,7 +163,6 @@ private:
 
         /// All things ROS
         ros::Publisher odom_local_pub;
-        ros::Publisher pose_local_pub;
         ros::Publisher global_gps_pub;
         ros::Publisher env_pub;
         airsim_ros_pkgs::Environment env_msg;
@@ -312,17 +305,6 @@ private:
     msr::airlib::MultirotorRpcLibClient* get_multirotor_client();
     msr::airlib::CarRpcLibClient* get_car_client();
 
-    // 存储每个lidar的设置
-    struct LidarFrameSetting {
-        std::string vehicle_name;
-        std::string sensor_name;
-        std::string data_frame;
-    };
-    std::map<std::string, LidarFrameSetting> lidar_frame_settings_;  // key: vehicle_name/sensor_name
-
-    // Helper function to get transformation matrix based on frame type
-    tf2::Matrix3x3 getLidarTransformationMatrix(const std::string& vehicle_name, const std::string& sensor_name) const;
-
 private:
     ros::NodeHandle nh_;
     ros::NodeHandle nh_private_;
@@ -371,7 +353,6 @@ private:
     GimbalCmd gimbal_cmd_;
 
     /// ROS tf
-    bool use_tf_ = true;
     const std::string AIRSIM_FRAME_ID = "world_ned";
     std::string world_frame_id_ = AIRSIM_FRAME_ID;
     const std::string AIRSIM_ODOM_FRAME_ID = "odom_local_ned";
@@ -403,7 +384,6 @@ private:
     ros::Publisher clock_pub_;
     rosgraph_msgs::Clock ros_clock_;
     bool publish_clock_ = false;
-    bool use_ros_time_ = false;
 
     ros::Subscriber gimbal_angle_quat_cmd_sub_;
     ros::Subscriber gimbal_angle_euler_cmd_sub_;
@@ -417,29 +397,3 @@ private:
     static constexpr char P_YML_NAME[] = "projection_matrix";
     static constexpr char DMODEL_YML_NAME[] = "distortion_model";
 };
-
-namespace utils
-{
-// ... existing code ...
-
-/**
- * @brief Get transformation matrix for lidar data based on its frame type
- * @param data_frame The frame type from lidar settings ("SensorLocalFrame" or "VehicleInertialFrame")
- * @return Transformation matrix for coordinate conversion
- */
-inline tf2::Matrix3x3 get_lidar_ned_to_enu_transform(const std::string& data_frame)
-{
-    if (data_frame == "SensorLocalFrame") {
-        // For sensor local frame: [1,0,0; 0,-1,0; 0,0,-1]
-        return tf2::Matrix3x3(1, 0, 0,
-                             0, -1, 0,
-                             0, 0, -1);
-    } else {
-        // For vehicle inertial frame: [0,1,0; 1,0,0; 0,0,-1]
-        return tf2::Matrix3x3(0, 1, 0,
-                             1, 0, 0,
-                             0, 0, -1);
-    }
-}
-
-}
