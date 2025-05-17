@@ -8,7 +8,7 @@
 #include <atomic>
 #include "common/Common.hpp"
 #include "common/common_utils/Utils.hpp"
-
+#include "common/common_utils/AdvanceSleep.h"
 namespace msr
 {
 namespace airlib
@@ -47,16 +47,17 @@ namespace airlib
             if (isCancelled()) {
                 return false;
             }
-
+#if SLEEP_MODE == 0
             TTimePoint start = ClockFactory::get()->nowNanos();
             static constexpr std::chrono::duration<double> MinSleepDuration(0);
 
             while (secs > 0 && !isCancelled() &&
                    ClockFactory::get()->elapsedSince(start) < secs) {
-
                 std::this_thread::sleep_for(MinSleepDuration);
             }
-
+#else
+            advanceSleep(secs * 1.0E3);
+#endif
             return !isCancelled();
         }
 

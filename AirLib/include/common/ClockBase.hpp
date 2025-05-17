@@ -7,7 +7,7 @@
 #include <thread>
 #include <chrono>
 #include "Common.hpp"
-
+#include "common/common_utils/AdvanceSleep.h"
 namespace msr
 {
 namespace airlib
@@ -73,12 +73,15 @@ namespace airlib
         {
             if (dt <= 0)
                 return;
-
+#if SLEEP_MODE == 0
             static constexpr std::chrono::duration<double> MinSleepDuration(0);
             TTimePoint start = nowNanos();
             //spin wait
             while (elapsedSince(start) < dt)
                 std::this_thread::sleep_for(MinSleepDuration);
+#else
+            advanceSleep(dt * 1e3);
+#endif
         }
 
         double getTrueScaleWrtWallClock()
