@@ -15,6 +15,8 @@ void advanceSleep(double ms);
 #define __cpp_lib_atomic_is_always_lock_free 0
 #endif
 #include "atomic_queue/atomic_queue.h"
+namespace advance_sleep
+{
 class Event
 {
 public:
@@ -23,22 +25,23 @@ public:
 };
 struct CompareEvent
 {
-    bool operator()(Event* a, Event* b)
+    bool operator()(advance_sleep::Event* a, advance_sleep::Event* b)
     {
         return a->wakeUpTimeMs > b->wakeUpTimeMs;
     }
 };
 extern atomic_queue::AtomicQueueB<
-    Event*,
+    advance_sleep::Event*,
     std::allocator<Event*>,
     (Event*)NULL,
     false,
     false,
     false>
     eventQueue;
-extern std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
+extern std::priority_queue<advance_sleep::Event*, std::vector<advance_sleep::Event*>, advance_sleep::CompareEvent> pq;
 void busySpin();
 extern std::thread busySpinThread;
+}
 #endif
 #endif
 #endif

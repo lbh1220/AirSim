@@ -7,18 +7,18 @@ double nowMs()
 #endif
 #if SLEEP_MODE == 1
 auto eventQueue = atomic_queue::AtomicQueueB<
-    Event*,
-    std::allocator<Event*>,
-    (Event*)NULL,
+    advance_sleep::Event*,
+    std::allocator<advance_sleep::Event*>,
+    (advance_sleep::Event*)NULL,
     false,
     false,
     false>(1024);
-std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
+std::priority_queue<advance_sleep::Event*, std::vector<advance_sleep::Event*>, advance_sleep::CompareEvent> pq;
 volatile bool busySpinQuit = false;
 void busySpin()
 {
     while (!busySpinQuit) {
-        Event* p;
+        advance_sleep::Event* p;
         while (eventQueue.try_pop(p)) {
             pq.push(p);
         }
@@ -37,7 +37,7 @@ void busySpin()
 std::thread busySpinThread(busySpin);
 void advanceSleep(double ms)
 {
-    Event e;
+    advance_sleep::Event e;
     e.wakeUpTimeMs = ms + nowMs();
     eventQueue.push(&e);
     e.p.get_future().wait();
