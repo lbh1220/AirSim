@@ -35,6 +35,8 @@ CMakeCache.txt
 #Unreal Engine
 /UnrealEngine
 Unreal/Environments/Blocks/
+*.umap
+*.uasset
 StarterContent/
 Saved/
 !DefaultEditorPerProjectUserSettings.ini #contains use less CPU setting
