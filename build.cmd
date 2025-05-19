@@ -179,15 +179,14 @@ IF NOT EXIST AirLib\deps\eigen3 (
 )
 IF NOT EXIST AirLib\deps\eigen3 goto :buildfailed
 
-
 REM //---------- now we have all dependencies to compile AirSim.sln which will also compile MavLinkCom ----------
 if "%buildMode%" == "" (
-msbuild -maxcpucount:12 /p:Platform=x64 /p:Configuration=Debug AirSim.sln
+msbuild -maxcpucount:12 /p:Platform=x64 /verbosity:q /p:Configuration=Debug AirSim.sln
 if ERRORLEVEL 1 goto :buildfailed
-msbuild -maxcpucount:12 /p:Platform=x64 /p:Configuration=Release AirSim.sln 
+msbuild -maxcpucount:12 /p:Platform=x64 /verbosity:q /p:Configuration=Release AirSim.sln 
 if ERRORLEVEL 1 goto :buildfailed
 ) else (
-msbuild -maxcpucount:12 /p:Platform=x64 /p:Configuration=%buildMode% AirSim.sln
+msbuild -maxcpucount:12 /p:Platform=x64 /verbosity:q /p:Configuration=%buildMode% AirSim.sln
 if ERRORLEVEL 1 goto :buildfailed
 )
 

@@ -456,6 +456,9 @@
     <ClInclude Include="include\common\common_utils\SmoothingFilter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\common\common_utils\AdvanceSleep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\safety\ObstacleMap.cpp">
@@ -486,6 +489,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\vehicles\multirotor\api\MultirotorApiBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\common_utils\AdvanceSleep.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,7 +11,7 @@
 #include <system_error>
 #include <mutex>
 #include <cstdint>
-
+#include "AdvanceSleep.h"
 namespace common_utils
 {
 
@@ -158,7 +158,7 @@ private:
         probbaly does spin loop anyway.
 
         */
-
+#if SLEEP_MODE == 0
         if (delay_nanos >= 5000000LL) { //put thread to sleep
             std::this_thread::sleep_for(std::chrono::duration<double>(delay_nanos / 1.0E9));
         }
@@ -169,6 +169,9 @@ private:
                 //std::this_thread::sleep_for(std::chrono::duration<double>(0));
             }
         }
+#else
+        advanceSleep(delay_nanos / 1.0E6);
+#endif
     }
 
     void executorLoop()
