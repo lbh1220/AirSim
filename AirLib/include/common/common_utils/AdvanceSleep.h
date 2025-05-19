@@ -38,9 +38,9 @@ extern atomic_queue::AtomicQueueB<
     false,
     false>
     eventQueue;
+extern volatile bool busySpinQuit;
 extern std::priority_queue<advance_sleep::Event*, std::vector<advance_sleep::Event*>, advance_sleep::CompareEvent> pq;
 void busySpin();
-extern std::thread busySpinThread;
 }
 #endif
 #endif

@@ -491,7 +491,7 @@
     <ClCompile Include="src\vehicles\multirotor\api\MultirotorApiBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\common\common_utils\AdvanceSleep.cpp">
+    <ClCompile Include="src\common\common_utils\AdvanceSleep.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

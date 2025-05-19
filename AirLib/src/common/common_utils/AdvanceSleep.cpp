@@ -1,4 +1,4 @@
-#include "AdvanceSleep.h"
+#include "common/common_utils/AdvanceSleep.h"
 #if SLEEP_MODE != 0
 double nowMs()
 {
@@ -6,19 +6,22 @@ double nowMs()
 }
 #endif
 #if SLEEP_MODE == 1
+namespace advance_sleep
+{
 auto eventQueue = atomic_queue::AtomicQueueB<
-    advance_sleep::Event*,
-    std::allocator<advance_sleep::Event*>,
-    (advance_sleep::Event*)NULL,
+    Event*,
+    std::allocator<Event*>,
+    (Event*)NULL,
     false,
     false,
     false>(1024);
-std::priority_queue<advance_sleep::Event*, std::vector<advance_sleep::Event*>, advance_sleep::CompareEvent> pq;
+std::priority_queue<Event*, std::vector<Event*>, CompareEvent> pq;
 volatile bool busySpinQuit = false;
 void busySpin()
 {
+    busySpinQuit = false;
     while (!busySpinQuit) {
-        advance_sleep::Event* p;
+        Event* p;
         while (eventQueue.try_pop(p)) {
             pq.push(p);
         }
@@ -34,12 +37,13 @@ void busySpin()
         }
     }
 }
-std::thread busySpinThread(busySpin);
+}
 void advanceSleep(double ms)
 {
+    static std::thread busySpinThread(advance_sleep::busySpin);
     advance_sleep::Event e;
     e.wakeUpTimeMs = ms + nowMs();
-    eventQueue.push(&e);
+    advance_sleep::eventQueue.push(&e);
     e.p.get_future().wait();
 }
 #elif SLEEP_MODE == 3

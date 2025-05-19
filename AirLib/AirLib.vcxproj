@@ -46,9 +46,7 @@
     <ClInclude Include="include\common\Common.hpp" />
     <ClInclude Include="include\common\CommonStructs.hpp" />
     <ClInclude Include="include\common\ClockFactory.hpp" />
-    <ClInclude Include="include\common\common_utils\AdvanceSleep.h">
-      <DeploymentContent>true</DeploymentContent>
-    </ClInclude>
+    <ClInclude Include="include\common\common_utils\AdvanceSleep.h" />
     <ClInclude Include="include\common\common_utils\bitmap_image.hpp" />
     <ClInclude Include="include\common\common_utils\ColorUtils.hpp" />
     <ClInclude Include="include\common\common_utils\ctpl_stl.h" />
@@ -183,9 +181,7 @@
     <ClInclude Include="include\vehicles\multirotor\RotorParams.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\common\common_utils\AdvanceSleep.cpp">
-      <DeploymentContent>true</DeploymentContent>
-    </ClCompile>
+    <ClCompile Include="src\common\common_utils\AdvanceSleep.cpp" />
     <ClCompile Include="src\api\RpcLibClientBase.cpp" />
     <ClCompile Include="src\api\RpcLibServerBase.cpp" />
     <ClCompile Include="src\vehicles\multirotor\api\MultirotorApiBase.cpp" />
@@ -313,6 +309,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -339,6 +336,7 @@
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4100;4505;4820;4464;4514;4710;4571;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -366,6 +364,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -396,6 +395,7 @@
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -425,6 +425,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -455,6 +456,7 @@
       <AdditionalOptions>/w34263 /w34266 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
