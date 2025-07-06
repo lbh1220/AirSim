@@ -95,9 +95,10 @@ void AirsimROSWrapper::initialize_ros()
     nh_private_.getParam("update_airsim_control_every_n_sec", update_airsim_control_every_n_sec);
     nh_private_.getParam("publish_clock", publish_clock_);
     nh_private_.param("world_frame_id", world_frame_id_, world_frame_id_);
-    odom_frame_id_ = world_frame_id_ == AIRSIM_FRAME_ID ? AIRSIM_ODOM_FRAME_ID : ENU_ODOM_FRAME_ID;
+    // odom_frame_id_ = world_frame_id_ == AIRSIM_FRAME_ID ? AIRSIM_ODOM_FRAME_ID : ENU_ODOM_FRAME_ID;
+    odom_frame_id_ = AIRSIM_ODOM_FRAME_ID;
     nh_private_.param("odom_frame_id", odom_frame_id_, odom_frame_id_);
-    isENU_ = !(odom_frame_id_ == AIRSIM_ODOM_FRAME_ID);
+    isENU_ = false;
     nh_private_.param("coordinate_system_enu", isENU_, isENU_);
     nh_private_.param("use_tf", use_tf_, use_tf_);
     nh_private_.param("use_ros_time", use_ros_time_, use_ros_time_);
@@ -105,6 +106,10 @@ void AirsimROSWrapper::initialize_ros()
     // todo enforce dynamics constraints in this node as well?
     // nh_.getParam("max_vert_vel_", max_vert_vel_);
     // nh_.getParam("max_horz_vel", max_horz_vel_)
+    if (isENU_) {
+        odom_frame_id_ = ENU_ODOM_FRAME_ID;
+        
+    }
     ROS_WARN("use_ros_time_: %d", use_ros_time_);
     ROS_WARN("publish_clock_: %d", publish_clock_);
     ROS_WARN("use_tf_: %d", use_tf_);
