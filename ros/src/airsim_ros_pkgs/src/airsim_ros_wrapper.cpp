@@ -780,7 +780,6 @@ nav_msgs::Odometry AirsimROSWrapper::get_odom_msg_from_multirotor_state(const ms
 sensor_msgs::PointCloud2 AirsimROSWrapper::get_lidar_msg_from_airsim(const msr::airlib::LidarData& lidar_data, const std::string& vehicle_name, const std::string& sensor_name) const
 {
     sensor_msgs::PointCloud2 lidar_msg;
-    // lidar_msg.header.stamp = ros::Time::now();
     if (use_ros_time_) {
         lidar_msg.header.stamp = ros::Time::now();
     } else {
@@ -788,80 +787,71 @@ sensor_msgs::PointCloud2 AirsimROSWrapper::get_lidar_msg_from_airsim(const msr::
     }
     lidar_msg.header.frame_id = vehicle_name + "/" + sensor_name;
 
-    if (lidar_data.point_cloud.size() > 3) {
+    const size_t num_points = lidar_data.point_cloud.size() / 3;
+    if (num_points > 0 && lidar_data.segmentation.size() == num_points) {
         lidar_msg.height = 1;
-        lidar_msg.width = lidar_data.point_cloud.size() / 3;
+        lidar_msg.width = num_points;
 
-        lidar_msg.fields.resize(3);
+        lidar_msg.fields.resize(4);
         lidar_msg.fields[0].name = "x";
+        lidar_msg.fields[0].offset = 0;
+        lidar_msg.fields[0].datatype = sensor_msgs::PointField::FLOAT32;
+        lidar_msg.fields[0].count = 1;
         lidar_msg.fields[1].name = "y";
+        lidar_msg.fields[1].offset = 4;
+        lidar_msg.fields[1].datatype = sensor_msgs::PointField::FLOAT32;
+        lidar_msg.fields[1].count = 1;
         lidar_msg.fields[2].name = "z";
-
-        int offset = 0;
-
-        for (size_t d = 0; d < lidar_msg.fields.size(); ++d, offset += 4) {
-            lidar_msg.fields[d].offset = offset;
-            lidar_msg.fields[d].datatype = sensor_msgs::PointField::FLOAT32;
-            lidar_msg.fields[d].count = 1;
-        }
+        lidar_msg.fields[2].offset = 8;
+        lidar_msg.fields[2].datatype = sensor_msgs::PointField::FLOAT32;
+        lidar_msg.fields[2].count = 1;
+        lidar_msg.fields[3].name = "segmentation";
+        lidar_msg.fields[3].offset = 12;
+        lidar_msg.fields[3].datatype = sensor_msgs::PointField::INT32;
+        lidar_msg.fields[3].count = 1;
 
         lidar_msg.is_bigendian = false;
-        lidar_msg.point_step = offset; // 4 * num fields
+        lidar_msg.point_step = 16; // 4*float + 1*int = 16 bytes
         lidar_msg.row_step = lidar_msg.point_step * lidar_msg.width;
+        lidar_msg.is_dense = true;
+        lidar_msg.data.resize(lidar_msg.row_step);
 
-        lidar_msg.is_dense = true; // todo
-        std::vector<float> data_std = lidar_data.point_cloud;
-
-        const unsigned char* bytes = reinterpret_cast<const unsigned char*>(data_std.data());
-        std::vector<unsigned char> lidar_msg_data(bytes, bytes + sizeof(float) * data_std.size());
-        lidar_msg.data = std::move(lidar_msg_data);
-
-        if (isENU_) {
-            try {
-                sensor_msgs::PointCloud2 lidar_msg_enu;
-                
-                // 获取lidar的frame类型并应用相应的变换
-                std::string key = vehicle_name + "/" + sensor_name;
-                auto it = lidar_frame_settings_.find(key);
-                if (it != lidar_frame_settings_.end()) {
-                    // 创建变换
-                    geometry_msgs::TransformStamped transform_stamped;
-                    transform_stamped.header.stamp = ros::Time::now();
-                    transform_stamped.header.frame_id = AIRSIM_FRAME_ID;
-                    transform_stamped.child_frame_id = vehicle_name;
-                    
-                    // 根据frame类型设置旋转矩阵
-                    tf2::Matrix3x3 rot_mat = utils::get_lidar_ned_to_enu_transform(it->second.data_frame);
-                    tf2::Quaternion q;
-                    rot_mat.getRotation(q);
-                    
-                    transform_stamped.transform.rotation.w = q.w();
-                    transform_stamped.transform.rotation.x = q.x();
-                    transform_stamped.transform.rotation.y = q.y();
-                    transform_stamped.transform.rotation.z = q.z();
-                    
-                    // 应用变换
-                    tf2::doTransform(lidar_msg, lidar_msg_enu, transform_stamped);
-                } else {
-                    ROS_WARN_STREAM("Lidar settings not found for " << key << ", skipping coordinate transformation");
-                    lidar_msg_enu = lidar_msg;
-                }
-
-                lidar_msg_enu.header.stamp = lidar_msg.header.stamp;
-                lidar_msg_enu.header.frame_id = lidar_msg.header.frame_id;
-
-                lidar_msg = std::move(lidar_msg_enu);
-            }
-            catch (tf2::TransformException& ex) {
-                ROS_WARN("%s", ex.what());
-                ros::Duration(1.0).sleep();
+        std::string key = vehicle_name + "/" + sensor_name;
+        auto it = lidar_frame_settings_.find(key);
+        bool is_sensor_local_frame = true;
+        if (it != lidar_frame_settings_.end()) {
+            // The frame type from lidar settings ("SensorLocalFrame" or "VehicleInertialFrame")
+            if (it->second.data_frame == "VehicleInertialFrame") {
+                is_sensor_local_frame = false;
             }
         }
-    }
-    else {
-        // msg = []
-    }
 
+        for (size_t i = 0; i < num_points; ++i) {
+            float x = lidar_data.point_cloud[3 * i];
+            float y = lidar_data.point_cloud[3 * i + 1];
+            float z = lidar_data.point_cloud[3 * i + 2];
+            int32_t seg = static_cast<int32_t>(lidar_data.segmentation[i]);
+            if (isENU_) {
+                // refer to get_lidar_ned_to_enu_transform() in airsim_ros_wrapper.h
+                if (is_sensor_local_frame) {
+                    // ENU: swap x/y, z取负
+                    // local frame时，point_cloud在lidar坐标系下，本来是前右下，现在要变成前左上
+                    y = -y;
+                    z = -z;
+                }
+                else{
+                    // vehicle inertial frame时，point_cloud在world系下，本来是NED，现在是ENU
+                    std::swap(x, y);
+                    z = -z;
+                }
+            }
+            std::memcpy(&lidar_msg.data[i * 16 + 0], &x, 4);
+            std::memcpy(&lidar_msg.data[i * 16 + 4], &y, 4);
+            std::memcpy(&lidar_msg.data[i * 16 + 8], &z, 4);
+            std::memcpy(&lidar_msg.data[i * 16 + 12], &seg, 4);
+        }
+    }
+    // else: no points or segmentation size mismatch, do nothing
     return lidar_msg;
 }
 
